@@ -43,7 +43,9 @@ public class Translate extends TestCase{
 
 	public static void main(String args[]){
 		Translate translate = new Translate();
-		translate.testOrigToONS();
+		//translate.testOrigToONS();
+		//translate.testOrigToElementString();
+		translate.testElementStringToEPCTagURI();
 	}
 
 	protected void setUp() {
@@ -78,6 +80,32 @@ public class Translate extends TestCase{
 		//------------------12345678901234--------123--------
 		String orig = "gtin=08800001000243;serial=001";
 		String s = engine.convert(orig, params, LevelTypeList.ONS_HOSTNAME);
+		
+		System.out.println(s);
+	}
+	
+	public void testOrigToElementString(){
+		System.out.println("Starting testOrigToONS()");
+		
+		params.put("taglength", "96");
+		params.put("filter", "0");
+		params.put("gs1companyprefixlength", "7");
+		
+		String orig = "gtin=08800001000243;serial=001";
+		String s = engine.convert(orig, params, LevelTypeList.ELEMENT_STRING);
+		
+		System.out.println(s);
+	}
+	
+	public void testElementStringToEPCTagURI(){
+		System.out.println("Starting testElementStringToEPCTagURI()");
+		
+		params.put("taglength", "96");
+		params.put("filter", "0");
+		params.put("gs1companyprefixlength", "7");
+		
+		String orig = "010880000100024321001";
+		String s = engine.convert(orig, params, LevelTypeList.TAG_ENCODING);
 		
 		System.out.println(s);
 	}
