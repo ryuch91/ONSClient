@@ -17,18 +17,18 @@ import org.xbill.DNS.Type;
 
 public class NaptrLookupTest {
 	
-	private static final String RESOLVER_ADDRESS = "127.0.0.1";
-	private static final int RESOLVER_PORT = 10053;
-	//private static final String[] LOCAL_SEARCH_PATH = { "143.248.56.102" };
-	private static final String DN = "3.5.1.0.0.0.1.0.0.0.0.8.8.gtin.gs1.id.onsepc.kr";
+	private static final String RESOLVER_ADDRESS = "143.248.55.143";
+	private static final int RESOLVER_PORT = 53;
+	private static final String[] LOCAL_SEARCH_PATH = { "127.0.1.1" };
+	private static final String DN = "0.4.2.0.0.0.1.0.0.0.0.8.8.gtin.gs1.id.onsepc.kr";
 	
 	public static void main(String[] args) throws InterruptedException, UnknownHostException, TextParseException {
 		SimpleResolver resolver = new SimpleResolver(RESOLVER_ADDRESS);
 		resolver.setPort(RESOLVER_PORT);
 		
 		Lookup.setDefaultResolver(resolver);
-		//Lookup.setDefaultSearchPath(LOCAL_SEARCH_PATH);
-		//Lookup.setDefaultCache(new Cache(), DClass.IN);
+		Lookup.setDefaultSearchPath(LOCAL_SEARCH_PATH);
+		Lookup.setDefaultCache(new Cache(), DClass.IN);
 		
 		Lookup lookup = new Lookup(DN, Type.NAPTR);
 		Record[] records = lookup.run();
@@ -36,9 +36,11 @@ public class NaptrLookupTest {
 		if(lookup.getResult() == Lookup.SUCCESSFUL){
 			for(Record record : records){
 				NAPTRRecord naptrRecord = (NAPTRRecord) record;
-				if(naptrRecord.getFlags().contains("a")){
-					String nodeName = naptrRecord.getReplacement().toString();
+				if(naptrRecord.getFlags().contains("U")){
+					String nodeName = naptrRecord.getService().toString();
+					String resource = naptrRecord.getRegexp();
 					System.out.println("Candidate node: " + nodeName);
+					System.out.println("Regexp : "+ resource);
 				}
 				
 			}
@@ -47,5 +49,4 @@ public class NaptrLookupTest {
 			System.out.println("Lookup fails!");
 		}
 	}
-	
 }
