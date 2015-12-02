@@ -41,12 +41,14 @@ public class Translate extends TestCase{
 		setUp();
 	}
 
+	/*****
 	public static void main(String args[]){
 		Translate translate = new Translate();
 		//translate.testOrigToONS();
 		//translate.testOrigToElementString();
 		translate.testElementStringToEPCTagURI();
 	}
+	******/
 
 	protected void setUp() {
 		params = new HashMap<String,String>();
@@ -70,20 +72,22 @@ public class Translate extends TestCase{
 	}
 
 	//Manual test from GAN
-	public void testOrigToONS(){
-		System.out.println("Starting testOrigToONS()");
+	public String legacyToONS(String origin){
+		System.out.println("Starting translation from legacy To ONS");
 		
 		params.put("taglength",  "96");
 		params.put("filter", "0");
 		params.put("gs1companyprefixlength", "7");
 		
-		//------------------12345678901234--------123--------
-		String orig = "gtin=08800001000243;serial=001";
+		String orig = origin;
+		//String orig = "gtin=08800001000243;serial=001";
 		String s = engine.convert(orig, params, LevelTypeList.ONS_HOSTNAME);
 		
-		System.out.println(s);
+		System.out.println("Convert result : "+ s);
+		return s;
 	}
 	
+	/****
 	public void testOrigToElementString(){
 		System.out.println("Starting testOrigToONS()");
 		
@@ -95,20 +99,37 @@ public class Translate extends TestCase{
 		String s = engine.convert(orig, params, LevelTypeList.ELEMENT_STRING);
 		
 		System.out.println(s);
-	}
+	}****/
 	
-	public void testElementStringToEPCTagURI(){
-		System.out.println("Starting testElementStringToEPCTagURI()");
+	public String elementStringToEpcTagURI(String origin){
+		System.out.println("Starting translation from ElementString to EPCTagURI");
 		
 		params.put("taglength", "96");
 		params.put("filter", "0");
 		params.put("gs1companyprefixlength", "7");
 		
-		String orig = "010880000100024321001";
+		String orig = origin;
 		String s = engine.convert(orig, params, LevelTypeList.TAG_ENCODING);
 		
-		System.out.println(s);
+		System.out.println("Convert result : "+ s);
+		return s;
 	}
+	
+	public String epcTagUriToOnsHostname(String origin){
+		System.out.println("Starting translation from EPCTagURI to ONS_HOSTNAME");
+		
+		params.put("taglength", "96");
+		params.put("filter", "0");
+		params.put("gs1companyprefixlength", "7");
+		
+		String orig = origin;
+		String s = engine.convert(orig, params, LevelTypeList.ONS_HOSTNAME);
+		
+		System.out.println("Convert result : "+ s);
+		return s;
+	}
+	
+	//------------------------------------------------------------------------
 	
 	public void testPage13Staged() {
 		System.out.println("Starting testPage13Staged()");
