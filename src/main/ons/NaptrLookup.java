@@ -63,4 +63,37 @@ public class NaptrLookup {
 		}
 		return nodeName;
 	}
+	
+public String getResource() throws InterruptedException, UnknownHostException, TextParseException{
+		
+		SimpleResolver resolver = new SimpleResolver(RESOLVER_ADDRESS);
+		
+		resolver.setPort(RESOLVER_PORT);
+		
+		Lookup.setDefaultResolver(resolver);
+		Lookup.setDefaultSearchPath(LOCAL_SEARCH_PATH);
+		Lookup.setDefaultCache(new Cache(), DClass.IN);
+		
+		Lookup lookup = new Lookup(DN, Type.NAPTR);
+		Record[] records = lookup.run();
+		String resource = null;
+		
+		if(lookup.getResult() == Lookup.SUCCESSFUL){
+			for(Record record : records){
+				NAPTRRecord naptrRecord = (NAPTRRecord) record;
+				if(naptrRecord.getFlags().contains("U")){
+					String nodeName = naptrRecord.getService().toString();
+					resource = naptrRecord.getRegexp();
+					System.out.println("Candidate node: " + nodeName);
+					System.out.println("Regexp : "+ resource);
+				}
+			}
+		}
+		else{
+			System.out.println("Lookup fails!");
+			resource = "";
+		}
+		return resource;
+	}
+	
 }
