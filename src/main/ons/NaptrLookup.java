@@ -22,17 +22,13 @@ public class NaptrLookup {
 	private static final String[] LOCAL_SEARCH_PATH = { "127.0.1.1" };
 	private static String DN;
 	
-	public NaptrLookup(String domain_name){
-		DN = domain_name;
-	}
-	
-	public NaptrLookup(String resolver_addr, int resolver_port, String domain_name){
+	public NaptrLookup(String resolver_addr, int resolver_port){
 		RESOLVER_ADDRESS = resolver_addr;
 		RESOLVER_PORT = resolver_port;
-		DN = domain_name;
 	}
 	
-	public String getNode() throws InterruptedException, UnknownHostException, TextParseException{
+	public String getNode(String domain_name) throws InterruptedException, UnknownHostException, TextParseException{
+		DN = domain_name;
 		
 		SimpleResolver resolver = new SimpleResolver(RESOLVER_ADDRESS);
 		
@@ -64,8 +60,9 @@ public class NaptrLookup {
 		return nodeName;
 	}
 	
-public String getResource() throws InterruptedException, UnknownHostException, TextParseException{
-		
+public String getResource(String domain_name) throws InterruptedException, UnknownHostException, TextParseException{
+		DN = domain_name;
+	
 		SimpleResolver resolver = new SimpleResolver(RESOLVER_ADDRESS);
 		
 		resolver.setPort(RESOLVER_PORT);
