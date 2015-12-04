@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Class-Path: lib/csv4j-0.4.0.jar lib/dnsjava-2.1.7.jar lib/tdt-1.0.0-with-dependencies.jar lib/xerces-2.9.0.jar lib/xercesImpl-2.9.1.jar
+Class-Path: lib/csv4j-0.4.0.jar lib/dnsjava-2.1.7.jar lib/tdt-1.0.0-with-dependencies.jar lib/xerces-for-android.jar
 Created-by: 1.0.0 (gan)
